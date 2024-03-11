@@ -5,7 +5,7 @@
   <groupId>com.lespinel.camel</groupId>
   <artifactId>demojdbc</artifactId>
   <version>1.0.0</version>
-  <name>A Camel Route</name>
+  <name>A example project using Apache Camel with JDBC and Rest components</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <log4j2-version>2.23.0</log4j2-version>
@@ -59,10 +59,6 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-direct</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-dynamic-router</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>

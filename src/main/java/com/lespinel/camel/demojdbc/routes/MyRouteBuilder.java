@@ -8,7 +8,6 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jdbc.JdbcConstants;
 import org.apache.camel.model.rest.RestBindingMode;
 
-import java.util.Arrays;
 import java.util.Map;
 
 @Slf4j
@@ -52,8 +51,8 @@ public class MyRouteBuilder extends RouteBuilder {
                     exchange.getIn().setHeader("from", from != null ? from : 0);
                     exchange.getIn().setHeader("to", to != null ? to : 10);
                 })
-                .setBody(simple("SELECT * FROM user LIMIT ${headers.from}, ${headers.to} "))
-                .to("jdbc:mysqlDatasource?outputClass="+User.class.getName())
+                .setBody(simple("SELECT * FROM user LIMIT :?from, :?to "))
+                .to("jdbc:mysqlDatasource?useHeadersAsParameters=true&outputClass="+User.class.getName())
                 .log("Total results founds: ${headers.CamelJdbcRowCount}");
 
         /*
@@ -80,23 +79,6 @@ public class MyRouteBuilder extends RouteBuilder {
                     }
                 })
                 .log("New user Created with key ${headers.CamelGeneratedKeysRows}");
-
-        /*
-         * Route that receipt a User list and show how to split the list
-         * and process each User individually
-         */
-        from("direct:processUserList")
-                .log("Items in body: ${body}")
-                .split(body()).streaming()
-                    .log("In log body data: ${body}")
-                    .process(exchange -> {
-                        User user = exchange.getIn().getBody(User.class);
-                        log.info("Processing user Id {} In process", user.getId());
-                    })
-                .end()
-                .log("processUserList finished")
-                .log("---------------------------");
-
 
     }
 }
